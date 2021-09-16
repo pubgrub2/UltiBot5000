@@ -2,6 +2,8 @@ import discord
 import os
 from discord.ext import commands
 from replit import db
+from keep_alive import keep_alive
+from checks import *
 
 intents = discord.Intents.default()
 intents.members = True
@@ -32,6 +34,7 @@ async def set_join_role(ctx, input):
     await ctx.send("The default role has been set to: " + input)
 
 @bot.command()
+@commands.has_permissions(administrator=True)
 async def join_role(ctx, arg=None, input=None):
   dbKey = (str(ctx.guild.id) + "onJoinRole")
   if arg == None or arg.lower() == "current":
@@ -54,4 +57,5 @@ async def join_role(ctx, arg=None, input=None):
 async def test(ctx):
   await ctx.send("hello world!")
 
+keep_alive()
 bot.run(os.getenv("TOKEN"))
