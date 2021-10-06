@@ -10,8 +10,9 @@ from checks import *
 intents = discord.Intents.default()
 intents.members = True
 intents.guilds = True
+activity = discord.Activity(type=discord.ActivityType.watching, name="you from the corner.")
 
-bot = commands.Bot(command_prefix="!", intents=intents)
+bot = commands.Bot(command_prefix="!", intents=intents, activity=activity, status=discord.Status.online)
 
 @bot.event
 async def on_ready():
