@@ -100,6 +100,19 @@ async def fard(ctx):
     await ctx.send("Please join a voice channel!")
 
 @bot.command()
+async def play(ctx, url : str):
+  voice_state = ctx.author.voice
+  if voice_state is not None:
+    channel = ctx.author.voice.channel
+    voice = discord.utils.get(bot.voice_clients, guild=ctx.guild)
+    if not voice.is_connected():
+      await channel.connect()
+    else:
+      await ctx.send("The bot is already in a channel!")
+  else:
+    await ctx.send("Please join a voice channel!")
+
+@bot.command()
 async def test(ctx):
   await ctx.send("hello world!")
 
