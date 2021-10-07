@@ -83,20 +83,21 @@ async def save_keys(ctx, arg=None):
 @bot.command(pass_context=True)
 async def fard(ctx):
   voice_state = ctx.author.voice
-  for x in voice_state.channel.members:
-    kaiHere = False
-    if x.id == 387673770824957954:
-      kaiHere = True
-      break
+  kaiHere = False
+  if voice_state is not None:
+    for x in voice_state.channel.members:
+      kaiHere = False
+      if x.id == 387673770824957954:
+        kaiHere = True
+        await ctx.send("BAN!")
+        break
   if voice_state is not None and kaiHere == False:
     channel = ctx.author.voice.channel
     vc = await channel.connect()
     vc.play(discord.FFmpegPCMAudio("Audio/fard.mp3"))
     time.sleep(2)
     await ctx.voice_client.disconnect()
-  elif kaiHere == True:
-    await ctx.send("BAN!")
-  else:
+  elif kaiHere == False:
     await ctx.send("Please join a voice channel!")
 
 @bot.command()
