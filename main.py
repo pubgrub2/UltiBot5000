@@ -100,6 +100,15 @@ async def fard(ctx):
   elif kaiHere == False:
     await ctx.send("Please join a voice channel!")
 
+@in_voice_channel()
+@bot.command()
+async def move(ctx, channel : discord.VoiceChannel):
+  try:
+    for members in ctx.author.voice.channel.members:
+      await members.move_to(channel)
+  except:
+    await ctx.send("error")
+
 @bot.command()
 async def test(ctx):
   await ctx.send("hello world!")
