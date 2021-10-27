@@ -52,13 +52,16 @@ async def on_guild_remove(guild):
 async def join_role(ctx, arg=None, input=None):
   dbKeyJoinRole = (str(ctx.guild.id) + "onJoinRole")
   if arg == None or arg.lower() == "current":
-    await ctx.send("The current join role is: " + db[dbKeyJoinRole])
+    if dbKeyJoinRole not in db.keys():
+      await ctx.send("Currently there is no join role set, to set one, use the command \"!join_role set <@role>\".")
+    else:
+      await ctx.send("The current join role is: " + db[dbKeyJoinRole])
   elif arg.lower() == "clear":
     del db[dbKeyJoinRole]
     await ctx.send("Join role has been cleared!")
   elif arg.lower() == "set":
     if input == None:
-      ctx.send("Please define a role! Syntax: !join_role set <@role>")
+      ctx.send("Please define a role. Syntax: \"!join_role set <@role>\".")
     else:
       dbKeyJoinRole = (str(ctx.guild.id) + "onJoinRole")
       roleId = input
@@ -78,7 +81,7 @@ async def save_keys(ctx, arg=None):
     db[dbKeySaveKeys] = False
     await ctx.send("Settings are not being saved!")
   else:
-    await ctx.send("Please use correct syntax: !save_keys on/off")
+    await ctx.send("Please use correct syntax: \"!save_keys on/off\".")
 
 @bot.command(pass_context=True)
 async def fard(ctx):
