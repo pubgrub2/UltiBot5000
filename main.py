@@ -16,7 +16,7 @@ bot = commands.Bot(command_prefix="!", intents=intents, activity=activity, statu
 
 @bot.event
 async def on_ready():
-  print("logged in as {0.user}".format(bot))
+  print("logged in as {0.user}".format(bot)) # prints bot username and tag
   for x in bot.guilds:
     dbKeySaveKeys = ("save" + str(x.id) + "saveKeys")
     if dbKeySaveKeys not in db.keys():
@@ -27,10 +27,11 @@ async def on_ready():
 async def on_member_join(member):
   if member.bot == False:
     dbKeyJoinRole = (str(member.guild.id) + "onJoinRole")
-    numeric_filter = filter(str.isdigit, db[dbKeyJoinRole])
-    numeric_string = "".join(numeric_filter)
-    role = member.guild.get_role(int(numeric_string))
-    await member.add_roles(role, reason="User \"" + member.name + "\" with id: " + str(member.id) + " Joined")
+    if dbKeyJoinRole in db.keys():
+      numeric_filter = filter(str.isdigit, db[dbKeyJoinRole])
+      numeric_string = "".join(numeric_filter)
+      role = member.guild.get_role(int(numeric_string))
+      await member.add_roles(role, reason="User \"" + member.name + "\" with id: " + str(member.id) + " Joined")
 
 @bot.event
 async def on_guild_join(guild):
