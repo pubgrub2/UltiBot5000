@@ -1,15 +1,17 @@
 import discord
 import os
 import time
-import nacl
+#import nacl
 from discord.ext import commands
 from replit import db
 from keep_alive import keep_alive
 from checks import *
+from discord import app_commands
 
 intents = discord.Intents.default()
 intents.members = True
 intents.guilds = True
+intents.message_content = True
 activity = discord.Activity(type=discord.ActivityType.watching, name="you from the corner.")
 
 bot = commands.Bot(command_prefix="!", intents=intents, activity=activity, status=discord.Status.online)
@@ -113,7 +115,7 @@ async def move(ctx, channel : discord.VoiceChannel):
   except:
     await ctx.send("error")
 
-@bot.command()
+@bot.hybrid_command(name = "test", description = "Tests the bot.")
 async def test(ctx):
   await ctx.send("hello world!")
 
@@ -137,6 +139,11 @@ async def list_key_values(ctx):
     await ctx.send("done.")
   else:
     await ctx.send("are you trying to play bot developer?")
+
+@bot.hybrid_command(name = "sync_commands", description = "Synchronizes application slash commands")
+async def sync_commands(ctx):
+  await bot.tree.sync()
+  await ctx.send("Slash commands have been synchonized.")
 
 keep_alive()
 bot.run(os.getenv("TOKEN"))
